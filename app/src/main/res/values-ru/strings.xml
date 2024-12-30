@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Пицца</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="login">Войти</string>
+    <string name="clue_email">Почта: azamat</string>
+    <string name="clue_password">Пароль: admin</string>
+    <string name="choose_txt">Выберите вашу любимую еду</string>
+    <string name="searchTxt">Искать</string>
+    <string name="category_txt">Категории</string>
+    <string name="menu_burger">Бургеры</string>
+</resources>
