@@ -1,68 +1,70 @@
-package com.geeks.pizza.adapter;
+package com.geeks.pizza.adapter
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.geeks.pizza.Burgers
+import com.geeks.pizza.R
+import com.geeks.pizza.adapter.BurgersAdapter.BurgersViewHolder
+import com.geeks.pizza.databinding.ItemBurgersBinding
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+class BurgersAdapter(private val list: ArrayList<Burgers>) :
+    RecyclerView.Adapter<BurgersViewHolder>() {
+    private var selectedPosition = -1
 
-import com.geeks.pizza.Burgers;
-import com.geeks.pizza.R;
-import com.geeks.pizza.databinding.ItemBurgersBinding;
-
-import java.util.ArrayList;
-
-public class BurgersAdapter extends RecyclerView.Adapter<BurgersAdapter.BurgersViewHolder> {
-    private ArrayList<Burgers> list;
-    private int selectedPosition = -1;
-
-    public BurgersAdapter(ArrayList<Burgers> list) {
-        this.list = list;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BurgersViewHolder {
+        val binding = ItemBurgersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return BurgersViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public BurgersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemBurgersBinding binding = ItemBurgersBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new BurgersViewHolder(binding);
+    override fun onBindViewHolder(holder: BurgersViewHolder, position: Int) {
+        holder.bind(list[position], position)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull BurgersViewHolder holder, int position) {
-        holder.bind(list.get(position), position);
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
-
-    public class BurgersViewHolder extends RecyclerView.ViewHolder {
-        ItemBurgersBinding binding;
-
-        public BurgersViewHolder(ItemBurgersBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        public void bind(Burgers burgers, int position) {
-            binding.burgerImg.setImageResource(burgers.getBurgerImg());
-            binding.burgerTxt.setText(burgers.getBurgerName());
+    inner class BurgersViewHolder(var binding: ItemBurgersBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(burgers: Burgers, position: Int) {
+            binding.burgerImg.setImageResource(burgers.burgerImg)
+            binding.burgerTxt.setText(burgers.burgerName)
 
             if (position == selectedPosition) {
-                binding.burgerTxt.setTextColor(ContextCompat.getColor(binding.burgerContainer.getContext(), R.color.white));
-                binding.burgerContainer.setBackgroundColor(ContextCompat.getColor(binding.burgerContainer.getContext(), R.color.light_red));
+                binding.burgerTxt.setTextColor(
+                    ContextCompat.getColor(
+                        binding.burgerContainer.context,
+                        R.color.white
+                    )
+                )
+                binding.burgerContainer.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.burgerContainer.context,
+                        R.color.light_red
+                    )
+                )
             } else {
-                binding.burgerTxt.setTextColor(ContextCompat.getColor(binding.burgerContainer.getContext(), R.color.gray));
-                binding.burgerContainer.setBackgroundColor(ContextCompat.getColor(binding.burgerContainer.getContext(), R.color.white));
+                binding.burgerTxt.setTextColor(
+                    ContextCompat.getColor(
+                        binding.burgerContainer.context,
+                        R.color.gray
+                    )
+                )
+                binding.burgerContainer.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.burgerContainer.context,
+                        R.color.white
+                    )
+                )
             }
 
-            binding.burgerContainer.setOnClickListener(v -> {
-                selectedPosition = position;
-                notifyDataSetChanged();
-            });
+            binding.burgerContainer.setOnClickListener { v: View? ->
+                selectedPosition = position
+                notifyDataSetChanged()
+            }
         }
     }
 }

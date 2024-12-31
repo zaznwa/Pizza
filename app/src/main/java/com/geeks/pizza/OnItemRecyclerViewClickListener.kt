@@ -1,5 +1,5 @@
-package com.geeks.pizza;
+package com.geeks.pizza
 
-public interface OnItemRecyclerViewClickListener {
-    void onFoodClick(Food food, int position);
+interface OnItemRecyclerViewClickListener {
+    fun onFoodClick(food: Food?, position: Int)
 }

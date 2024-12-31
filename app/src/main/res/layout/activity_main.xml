@@ -55,7 +55,6 @@
         android:layout_height="56dp"
         android:layout_marginTop="39dp"
         android:background="@drawable/login_btn"
-        android:onClick="onForgot"
         android:text="@string/login"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

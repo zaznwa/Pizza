@@ -1,78 +1,77 @@
-package com.geeks.pizza.adapter;
+package com.geeks.pizza.adapter
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.geeks.pizza.Food
+import com.geeks.pizza.OnItemRecyclerViewClickListener
+import com.geeks.pizza.R
+import com.geeks.pizza.adapter.FoodAdapter.FoodViewHolder
+import com.geeks.pizza.databinding.ItemMenuBinding
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+class FoodAdapter(
+    private val list: ArrayList<Food>,
+    private val onItemRecyclerViewClickListener: OnItemRecyclerViewClickListener?
+) :
+    RecyclerView.Adapter<FoodViewHolder>() {
+    private var selectedPosition = -1
 
-import com.geeks.pizza.Food;
-import com.geeks.pizza.OnItemRecyclerViewClickListener;
-import com.geeks.pizza.R;
-import com.geeks.pizza.databinding.ItemMenuBinding;
-
-import java.util.ArrayList;
-
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
-
-    private ArrayList<Food> list;
-    private OnItemRecyclerViewClickListener onItemRecyclerViewClickListener;
-    private int selectedPosition = -1;
-
-    public FoodAdapter(ArrayList<Food> list, OnItemRecyclerViewClickListener listener) {
-        this.list = list;
-        this.onItemRecyclerViewClickListener = listener;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
+        val binding = ItemMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FoodViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemMenuBinding binding = ItemMenuBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new FoodViewHolder(binding);
+    override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
+        holder.bind(list[position], position)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
-        holder.bind(list.get(position), position);
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
-
-    public class FoodViewHolder extends RecyclerView.ViewHolder {
-        ItemMenuBinding binding;
-
-        public FoodViewHolder(ItemMenuBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        public void bind(Food food, int position) {
-            binding.menuTxt.setText(food.getFoodName());
-            binding.imageView.setImageResource(food.getFoodImg());
+    inner class FoodViewHolder(var binding: ItemMenuBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
+        fun bind(food: Food, position: Int) {
+            binding.menuTxt.setText(food.foodName)
+            binding.imageView.setImageResource(food.foodImg)
 
             if (position == selectedPosition) {
-                binding.menuTxt.setTextColor(ContextCompat.getColor(binding.menuContainer.getContext(), R.color.white));
-                binding.menuContainer.setBackgroundColor(ContextCompat.getColor(binding.menuContainer.getContext(), R.color.light_red));
+                binding.menuTxt.setTextColor(
+                    ContextCompat.getColor(
+                        binding.menuContainer.context,
+                        R.color.white
+                    )
+                )
+                binding.menuContainer.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.menuContainer.context,
+                        R.color.light_red
+                    )
+                )
             } else {
-                binding.menuTxt.setTextColor(ContextCompat.getColor(binding.menuContainer.getContext(), R.color.gray));
-                binding.menuContainer.setBackgroundColor(ContextCompat.getColor(binding.menuContainer.getContext(), R.color.white));
-                binding.imageView.setImageResource(food.getFoodImg());
+                binding.menuTxt.setTextColor(
+                    ContextCompat.getColor(
+                        binding.menuContainer.context,
+                        R.color.gray
+                    )
+                )
+                binding.menuContainer.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.menuContainer.context,
+                        R.color.white
+                    )
+                )
+                binding.imageView.setImageResource(food.foodImg)
             }
 
-            binding.menuContainer.setOnClickListener(v -> {
-
-                if (onItemRecyclerViewClickListener != null) {
-                    onItemRecyclerViewClickListener.onFoodClick(food, getAdapterPosition());
-                }
-                selectedPosition = position;
-                notifyDataSetChanged();
-            });
-
+            binding.menuContainer.setOnClickListener { v: View? ->
+                onItemRecyclerViewClickListener?.onFoodClick(food, adapterPosition)
+                selectedPosition = position
+                notifyDataSetChanged()
+            }
         }
     }
 }
